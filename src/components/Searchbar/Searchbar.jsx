@@ -13,7 +13,7 @@ class SearchBar extends Component {
   handleSubmit = event => {
     event.preventDefault();
     // const searchQuery = event.target.elements.searchName.value.trim();
-    this.props.onSubmit(this.inputValue.value.trim());
+    this.props.onSubmit(this.state.inputValue.trim());
     event.target.reset();
   };
 
