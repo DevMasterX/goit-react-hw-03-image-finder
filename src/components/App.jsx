@@ -1,9 +1,9 @@
 import { Component } from 'react';
-
+import SearchBar from './Searchbar/Searchbar';
 
 class App extends Component {
   state = {
-     searchName: '',
+    searchName: '',
     images: [],
     currentPage: 1,
     error: null,
@@ -11,10 +11,19 @@ class App extends Component {
     totalPages: 0,
     visible: false,
   };
+
+  handleSubmit = query => {
+    const { searchName } = this.state;
+    this.setState({ searchName: { query }, currentPage: 1 });
+  };
+
   render() {
-    return ();
+    return (
+      <div>
+        <SearchBar onSubmit={this.handleSubmit} />
+      </div>
+    );
   }
 }
-
 
 export default App;

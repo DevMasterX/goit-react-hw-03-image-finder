@@ -9,6 +9,7 @@ export const getImages = async (query, page) => {
     `?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`
   );
   return response.data;
+   
 };
 
 export const normalizedImages = imageArray =>

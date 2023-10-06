@@ -2,7 +2,7 @@ import { Component } from 'react';
 
 class SearchBar extends Component {
   state = {
-    searchName: '',
+    // searchName: '',
     inputValue: '',
   };
 
@@ -12,26 +12,25 @@ class SearchBar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const searchQuery = event.target.elements.searchName.value.trim();
-    this.props.onSubmit(searchQuery);
+    // const searchQuery = event.target.elements.searchName.value.trim();
+    this.props.onSubmit(this.inputValue.value.trim());
     event.target.reset();
   };
 
   render() {
     return (
-      <header class="searchbar">
-        <form class="form" onSubmit={this.handleSubmit}>
-          <button type="submit" class="button">
-            <span class="button-label">Search</span>
+      <header>
+        <form onSubmit={this.handleSubmit}>
+          <button type="submit">
+            <span>Search</span>
           </button>
 
           <input
             name="searchName"
-            class="input"
             type="text"
             id="search"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
             value={this.state.inputValue}
             onChange={this.handleChange}
