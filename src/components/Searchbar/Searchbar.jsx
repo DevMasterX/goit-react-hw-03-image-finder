@@ -1,8 +1,16 @@
 import { Component } from 'react';
+import { BsSearch } from 'react-icons/bs';
+import propTypes from 'prop-types';
+import {
+  SearchForm,
+  SearchInput,
+  SearchButton,
+  SearchSpan,
+} from './Searchbar.styled';
 
 class SearchBar extends Component {
   state = {
-    // searchName: '',
+    searchName: '',
     inputValue: '',
   };
 
@@ -12,33 +20,34 @@ class SearchBar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    // const searchQuery = event.target.elements.searchName.value.trim();
-    this.props.onSubmit(this.state.inputValue.trim());
+    const searchQuery = event.target.elements.searchName.value.trim();
+    this.props.onSubmit(searchQuery);
     event.target.reset();
   };
 
   render() {
     return (
       <header>
-        <form onSubmit={this.handleSubmit}>
-          <button type="submit">
-            <span>Search</span>
-          </button>
-
-          <input
+        <SearchForm onSubmit={this.handleSubmit}>
+          <SearchButton>
+            <BsSearch />
+            <SearchSpan>Search</SearchSpan>
+          </SearchButton>
+          <SearchInput
             name="searchName"
             type="text"
             id="search"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
             value={this.state.inputValue}
             onChange={this.handleChange}
           />
-        </form>
+        </SearchForm>
       </header>
     );
   }
 }
+
+SearchBar.propTypes = {
+  onSubmit: propTypes.func.isRequired,
+};
 
 export default SearchBar;

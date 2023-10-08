@@ -1,16 +1,19 @@
 import { Component } from 'react';
-import SearchBar from './Searchbar/Searchbar';
-import ImageGallery from './ImageGallery/ImageGallery';
 import * as API from '../../services/PixabayApi';
-import { getImages } from 'services/PixabayApi';
+import SearchBar from '../Searchbar/Searchbar';
+import ImageGallery from '../ImageGallery/ImageGallery';
+import Loader from '../Loader/Loader';
+import Button from '../Button/Button';
+import ScrollButton from 'components/ScrollTop/ScrollTop';
 import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
   state = {
     searchName: '',
     images: [],
     currentPage: 1,
-    error: '',
+    error: null,
     isLoading: false,
     totalPages: 0,
     visible: false,
@@ -24,6 +27,27 @@ class App extends Component {
       this.addImages();
     }
   }
+
+  loadMore = () => {
+    this.setState(prevState => ({
+      currentPage: prevState.currentPage + 1,
+    }));
+  };
+
+  handleSubmit = query => {
+    const { searchName } = this.state;
+    if (searchName === query) {
+      return toast.warning('Please enter another request 😒', {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    this.setState({
+      searchName: query,
+      images: [],
+      currentPage: 1,
+      totalPages: 0,
+    });
+  };
 
   addImages = async () => {
     const { searchName, currentPage } = this.state;
@@ -53,18 +77,31 @@ class App extends Component {
     }
   };
 
-  handleSubmit = query => {
-    // const { searchName } = this.state;
-    this.setState({ searchName: query, currentPage: 1 });
-  };
-
   render() {
-    const { images, error } = this.state;
+    const { images, isLoading, currentPage, totalPages } = this.state;
+
     return (
       <div>
-        {error && <p>{error}</p>}
+        <ToastContainer transition={Slide} />
         <SearchBar onSubmit={this.handleSubmit} />
-        <ImageGallery images={images} />
+        {images.length > 0 ? (
+          <ImageGallery images={images} />
+        ) : (
+          <p
+            style={{
+              padding: 100,
+              textAlign: 'center',
+              fontSize: 30,
+            }}
+          >
+            Image gallery is empty... 📷
+          </p>
+        )}
+        {isLoading && <Loader />}
+        {images.length > 0 && totalPages !== currentPage && !isLoading && (
+          <Button onClick={this.loadMore} />
+        )}
+        <ScrollButton />
       </div>
     );
   }
